@@ -12,12 +12,14 @@
     }
 
     header {
-      background-color: #5c068c;
-      color: #fc4c02;
+      background-color: #fc4c02;
+      color: #641393;
       padding: 20px;
       text-align: center;
       font-size: 24px;
       font-weight: bold;
+      font-style: oblique;
+      font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif
     }
 
     nav {
@@ -33,7 +35,7 @@
     }
 
     nav a:hover {
-      background-color: #5c068c;
+      background-color: #641393;
     }
 
     main {
@@ -41,26 +43,47 @@
     }
 
     .project {
-      border: 1px solid #5c068c;
+      border: 1px solid #641393;
       border-radius: 5px;
       padding: 10px;
       margin-bottom: 20px;
     }
 
     .project h2 {
-      color: #5c068c;
+      color: #641393;
       margin-top: 0;
     }
 
     .project img {
-      max-width: 100%;
+      max-width: 50%;
+      width: 20%;
       height: auto;
+    }
+    header {
+      position: relative;
+      text-align: center;
+    }
+
+    header img {
+      width: 10%;
+      height: auto;
+    }
+
+    header .title {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: #641393;
+      font-size: 24px;
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
   <header>
-    AI Research Engineer Portfolio
+    <img src="header-image2.jpg" alt="Header Image">
+    <br>AI Research Engineer
   </header>
 
   <nav>
@@ -81,7 +104,7 @@
 
       <!-- Add your projects here -->
       <article class="project">
-        <h2>Project Title</h2>
+        <h2>Project : News-Based Stock Predictions using ChatGPT </h2>
         <img src="project-image.jpg" alt="Project image">
         <p>Project description...</p>
       </article>
@@ -94,7 +117,13 @@
 
     <section id="contact">
       <h1>Contact</h1>
-      <p>Contact information...</p>
+      <p>linkedin: https://www.linkedin.com/in/sooalim/
+      <br>email: sooa.lim@gmail.com
+      <br>github: github.com/sooalim
+      <br>Toronto, Canada
+
+      </p>
+      
     </section>
   </main>
 </body>
