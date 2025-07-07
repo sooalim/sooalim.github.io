@@ -1,0 +1,74 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "DefaultEndpointsProtocol=https;AccountName=<storage_account_name>;AccountKey=<storage_account_key>;EndpointSuffix=core.windows.net",
+    "FUNCTIONS_WORKER_RUNTIME": "python",
+    "FUNCTIONS_EXTENSION_VERSION": "~4",
+    "PYTHON_ISOLATE_WORKER_DEPENDENCIES": "1",
+    
+    "KEY_VAULT_NAME": "<key_vault_name>",
+    "STORAGE_ACCOUNT_NAME": "<storage_account_name>",
+    "SEARCH_SERVICE_NAME": "<search_service_name>",
+    
+    "DOCUMENTS_CONTAINER": "documents",
+    "PROCESSED_CONTAINER": "processed",
+    "VECTORS_CONTAINER": "vectors",
+    "LOGS_CONTAINER": "logs",
+    
+    "CHUNK_SIZE": "1000",
+    "CHUNK_OVERLAP": "100",
+    "MAX_TOKENS": "4000",
+    "EMBEDDING_MODEL": "text-embedding-ada-002",
+    "COMPLETION_MODEL": "gpt-35-turbo",
+    "TEMPERATURE": "0.7",
+    "MAX_SEARCH_RESULTS": "10",
+    "SEARCH_SCORE_THRESHOLD": "0.8",
+    "BATCH_SIZE": "10",
+    
+    "DOCUMENT_INDEX_NAME": "documents",
+    "CHUNK_INDEX_NAME": "chunks",
+    
+    "AZURE_CLIENT_ID": "<managed_identity_client_id>",
+    "AZURE_TENANT_ID": "<tenant_id>",
+    
+    "APPINSIGHTS_INSTRUMENTATIONKEY": "<application_insights_key>",
+    "APPLICATIONINSIGHTS_CONNECTION_STRING": "InstrumentationKey=<application_insights_key>",
+    
+    "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING": "DefaultEndpointsProtocol=https;AccountName=<storage_account_name>;AccountKey=<storage_account_key>;EndpointSuffix=core.windows.net",
+    "WEBSITE_CONTENTSHARE": "<function_app_name>",
+    
+    "COGNITIVE_SERVICES_ENDPOINT": "https://<cognitive_services_name>.cognitiveservices.azure.com",
+    "FORM_RECOGNIZER_ENDPOINT": "https://<form_recognizer_name>.cognitiveservices.azure.com",
+    "TEXT_ANALYTICS_ENDPOINT": "https://<text_analytics_name>.cognitiveservices.azure.com",
+    "OPENAI_ENDPOINT": "https://<openai_service_name>.openai.azure.com",
+    
+    "ENVIRONMENT": "Development",
+    "LOG_LEVEL": "INFO",
+    "DEBUG": "false",
+    
+    "RETRY_MAX_ATTEMPTS": "3",
+    "RETRY_BACKOFF_FACTOR": "2",
+    "REQUEST_TIMEOUT": "300",
+    
+    "ENABLE_COGNITIVE_SERVICES": "true",
+    "ENABLE_HEALTHCARE_ANALYSIS": "false",
+    "ENABLE_PII_DETECTION": "true",
+    "ENABLE_SUMMARY_EXTRACTION": "true",
+    
+    "CHUNK_STRATEGY": "recursive_character",
+    "VECTOR_DIMENSIONS": "1536",
+    "SIMILARITY_THRESHOLD": "0.8",
+    
+    "MONITORING_ENABLED": "true",
+    "TELEMETRY_ENABLED": "true",
+    "PERFORMANCE_COUNTERS_ENABLED": "true"
+  },
+  "Host": {
+    "LocalHttpPort": 7071,
+    "CORS": "*",
+    "CORSCredentials": false
+  },
+  "ConnectionStrings": {
+    "AzureWebJobsStorage": "DefaultEndpointsProtocol=https;AccountName=<storage_account_name>;AccountKey=<storage_account_key>;EndpointSuffix=core.windows.net"
+  }
+}

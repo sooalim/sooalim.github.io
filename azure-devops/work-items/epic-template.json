@@ -1,0 +1,202 @@
+{
+  "epics": [
+    {
+      "title": "RAG Agent Discovery & Planning",
+      "description": "Complete discovery sessions, requirements gathering, and technical architecture design for the RAG agent implementation",
+      "acceptanceCriteria": [
+        "Discovery sessions conducted with all stakeholders",
+        "Business requirements documented and approved",
+        "Technical architecture designed and reviewed",
+        "Project charter signed off",
+        "Risk assessment completed",
+        "Timeline and milestones established"
+      ],
+      "priority": 1,
+      "businessValue": 100,
+      "effort": 40,
+      "tags": ["Discovery", "Planning", "Architecture"],
+      "areaPath": "Discovery & Planning",
+      "iterationPath": "Sprint 1",
+      "features": [
+        "Stakeholder Discovery Sessions",
+        "Business Requirements Analysis",
+        "Technical Architecture Design",
+        "Project Charter Creation",
+        "Risk Assessment & Mitigation"
+      ]
+    },
+    {
+      "title": "Data Processing Infrastructure",
+      "description": "Implement comprehensive data extraction, ingestion, and chunking pipeline using Azure services and Python",
+      "acceptanceCriteria": [
+        "Data extraction pipeline operational",
+        "Azure Cognitive Services integration completed",
+        "Data chunking and vectorization implemented",
+        "Vector database configured and tested",
+        "Data quality validation in place",
+        "Monitoring and logging configured"
+      ],
+      "priority": 1,
+      "businessValue": 90,
+      "effort": 60,
+      "tags": ["Data Processing", "Azure", "Python"],
+      "areaPath": "Data Processing",
+      "iterationPath": "Sprint 2",
+      "features": [
+        "Data Extraction Pipeline",
+        "Azure Cognitive Services Integration",
+        "Data Chunking & Vectorization",
+        "Vector Database Setup",
+        "Data Quality Validation"
+      ]
+    },
+    {
+      "title": "RAG Agent Development",
+      "description": "Build and configure the Copilot Studio agent with RAG capabilities and MCP integration for future expansion",
+      "acceptanceCriteria": [
+        "Copilot Studio agent configured and operational",
+        "RAG functionality implemented and tested",
+        "MCP framework integrated for future expansion",
+        "Agent responses validated for accuracy",
+        "Conversation flows optimized",
+        "Integration testing completed"
+      ],
+      "priority": 1,
+      "businessValue": 95,
+      "effort": 50,
+      "tags": ["Copilot Studio", "RAG", "MCP", "Agent"],
+      "areaPath": "Agent Development",
+      "iterationPath": "Sprint 3",
+      "features": [
+        "Copilot Studio Agent Configuration",
+        "RAG Implementation",
+        "MCP Integration Framework",
+        "Conversation Flow Optimization",
+        "Agent Testing & Validation"
+      ]
+    },
+    {
+      "title": "Continuous Data Refresh System",
+      "description": "Implement Azure Functions-based system for continuous data refresh and maintenance of the RAG knowledge base",
+      "acceptanceCriteria": [
+        "Azure Functions deployed and operational",
+        "Automated data refresh schedules configured",
+        "Delta processing implemented for efficiency",
+        "Error handling and retry mechanisms in place",
+        "Monitoring and alerting configured",
+        "Performance optimization completed"
+      ],
+      "priority": 2,
+      "businessValue": 80,
+      "effort": 35,
+      "tags": ["Azure Functions", "Automation", "Data Refresh"],
+      "areaPath": "Agent Development",
+      "iterationPath": "Sprint 3",
+      "features": [
+        "Azure Functions Development",
+        "Data Refresh Automation",
+        "Delta Processing Implementation",
+        "Error Handling & Monitoring",
+        "Performance Optimization"
+      ]
+    },
+    {
+      "title": "Deployment & Environment Management",
+      "description": "Deploy RAG agent to UAT and Production environments with proper testing, validation, and monitoring",
+      "acceptanceCriteria": [
+        "UAT environment deployed and configured",
+        "Production environment deployed and secured",
+        "Deployment pipelines operational",
+        "Environment-specific configurations validated",
+        "Security and compliance verified",
+        "Monitoring and observability implemented"
+      ],
+      "priority": 1,
+      "businessValue": 85,
+      "effort": 45,
+      "tags": ["Deployment", "UAT", "Production", "DevOps"],
+      "areaPath": "Deployment & Testing",
+      "iterationPath": "Sprint 4",
+      "features": [
+        "UAT Environment Setup",
+        "Production Environment Setup",
+        "Deployment Pipeline Configuration",
+        "Security & Compliance Validation",
+        "Monitoring & Observability"
+      ]
+    },
+    {
+      "title": "Knowledge Transfer & Documentation",
+      "description": "Comprehensive knowledge transfer to client team with complete documentation and training materials",
+      "acceptanceCriteria": [
+        "Technical documentation completed",
+        "User documentation created",
+        "Training materials developed",
+        "Knowledge transfer sessions conducted",
+        "Support procedures documented",
+        "Maintenance guides provided"
+      ],
+      "priority": 1,
+      "businessValue": 75,
+      "effort": 30,
+      "tags": ["Documentation", "Training", "Knowledge Transfer"],
+      "areaPath": "Knowledge Transfer",
+      "iterationPath": "Sprint 4",
+      "features": [
+        "Technical Documentation",
+        "User Guide Creation",
+        "Training Material Development",
+        "Knowledge Transfer Sessions",
+        "Support Documentation"
+      ]
+    }
+  ],
+  "customFields": {
+    "businessValue": {
+      "name": "Business Value",
+      "type": "integer",
+      "description": "Business value score (1-100)"
+    },
+    "effort": {
+      "name": "Effort",
+      "type": "integer", 
+      "description": "Effort estimation in story points"
+    },
+    "riskLevel": {
+      "name": "Risk Level",
+      "type": "string",
+      "allowedValues": ["Low", "Medium", "High", "Critical"],
+      "description": "Risk assessment level"
+    },
+    "clientApproval": {
+      "name": "Client Approval",
+      "type": "string",
+      "allowedValues": ["Pending", "Approved", "Rejected", "Not Required"],
+      "description": "Client approval status"
+    }
+  },
+  "relationships": {
+    "dependencies": [
+      {
+        "predecessor": "RAG Agent Discovery & Planning",
+        "successor": "Data Processing Infrastructure",
+        "type": "Finish-to-Start"
+      },
+      {
+        "predecessor": "Data Processing Infrastructure",
+        "successor": "RAG Agent Development",
+        "type": "Finish-to-Start"
+      },
+      {
+        "predecessor": "RAG Agent Development",
+        "successor": "Deployment & Environment Management",
+        "type": "Finish-to-Start"
+      },
+      {
+        "predecessor": "Deployment & Environment Management",
+        "successor": "Knowledge Transfer & Documentation",
+        "type": "Finish-to-Start"
+      }
+    ]
+  }
+}

@@ -1,0 +1,209 @@
+{
+  "name": "RAG Agent Project Template",
+  "description": "Comprehensive Azure DevOps project template for building RAG agents with client infrastructure checklist, licensing requirements, and 6-8 week deployment timeline",
+  "version": "1.0.0",
+  "templateType": "project",
+  "visibility": "private",
+  "areas": [
+    {
+      "name": "Discovery & Planning",
+      "description": "Requirements gathering, technical design, and project setup"
+    },
+    {
+      "name": "Data Processing",
+      "description": "Data extraction, ingestion, and chunking workflows"
+    },
+    {
+      "name": "Agent Development",
+      "description": "Copilot Studio agent build and MCP integration"
+    },
+    {
+      "name": "Deployment & Testing",
+      "description": "UAT and production deployment with testing"
+    },
+    {
+      "name": "Knowledge Transfer",
+      "description": "Documentation and knowledge transfer activities"
+    }
+  ],
+  "iterations": [
+    {
+      "name": "Sprint 1",
+      "startDate": "2025-01-01",
+      "endDate": "2025-01-14",
+      "path": "\\Sprint 1"
+    },
+    {
+      "name": "Sprint 2", 
+      "startDate": "2025-01-15",
+      "endDate": "2025-01-28",
+      "path": "\\Sprint 2"
+    },
+    {
+      "name": "Sprint 3",
+      "startDate": "2025-01-29",
+      "endDate": "2025-02-11",
+      "path": "\\Sprint 3"
+    },
+    {
+      "name": "Sprint 4",
+      "startDate": "2025-02-12",
+      "endDate": "2025-02-25",
+      "path": "\\Sprint 4"
+    }
+  ],
+  "repositories": [
+    {
+      "name": "rag-agent-source",
+      "type": "Git",
+      "defaultBranch": "main",
+      "description": "Source code repository for RAG agent implementation"
+    },
+    {
+      "name": "rag-agent-infrastructure",
+      "type": "Git", 
+      "defaultBranch": "main",
+      "description": "Infrastructure as Code repository (Bicep/ARM templates)"
+    },
+    {
+      "name": "rag-agent-documentation",
+      "type": "Git",
+      "defaultBranch": "main",
+      "description": "Project documentation and knowledge base"
+    }
+  ],
+  "buildPipelines": [
+    {
+      "name": "RAG-Agent-CI",
+      "description": "Continuous Integration pipeline for RAG agent components",
+      "yamlPath": "azure-devops/pipelines/build-pipeline.yml",
+      "triggers": ["main", "develop"]
+    },
+    {
+      "name": "Infrastructure-CI",
+      "description": "Infrastructure validation and deployment pipeline",
+      "yamlPath": "azure-devops/pipelines/infrastructure-pipeline.yml",
+      "triggers": ["main"]
+    }
+  ],
+  "releasePipelines": [
+    {
+      "name": "RAG-Agent-CD",
+      "description": "Continuous Deployment pipeline for UAT and Production",
+      "yamlPath": "azure-devops/pipelines/release-pipeline.yml",
+      "environments": ["UAT", "Production"]
+    }
+  ],
+  "variableGroups": [
+    {
+      "name": "RAG-Agent-Common",
+      "description": "Common variables for all environments",
+      "variables": [
+        {
+          "name": "azureSubscription",
+          "value": "$(AZURE_SUBSCRIPTION_ID)",
+          "isSecret": false
+        },
+        {
+          "name": "resourceGroupPrefix",
+          "value": "rg-rag-agent",
+          "isSecret": false
+        },
+        {
+          "name": "location",
+          "value": "East US 2",
+          "isSecret": false
+        }
+      ]
+    },
+    {
+      "name": "RAG-Agent-Secrets",
+      "description": "Secret variables for the RAG agent",
+      "variables": [
+        {
+          "name": "openAIKey",
+          "value": "$(OPENAI_API_KEY)",
+          "isSecret": true
+        },
+        {
+          "name": "cosmosDBConnectionString",
+          "value": "$(COSMOS_DB_CONNECTION_STRING)",
+          "isSecret": true
+        },
+        {
+          "name": "storageAccountKey",
+          "value": "$(STORAGE_ACCOUNT_KEY)",
+          "isSecret": true
+        }
+      ]
+    }
+  ],
+  "serviceConnections": [
+    {
+      "name": "Azure-Service-Connection",
+      "type": "azurerm",
+      "description": "Service connection for Azure resource management"
+    },
+    {
+      "name": "GitHub-Service-Connection",
+      "type": "github",
+      "description": "Service connection for GitHub integration (if applicable)"
+    }
+  ],
+  "dashboards": [
+    {
+      "name": "RAG Agent Project Overview",
+      "description": "Main project dashboard with key metrics and status",
+      "widgets": [
+        {
+          "type": "burndown",
+          "name": "Sprint Burndown",
+          "size": "medium"
+        },
+        {
+          "type": "velocity",
+          "name": "Team Velocity",
+          "size": "medium"
+        },
+        {
+          "type": "workItems",
+          "name": "Active Work Items",
+          "size": "large"
+        },
+        {
+          "type": "buildStatus",
+          "name": "Build Status",
+          "size": "small"
+        },
+        {
+          "type": "releaseStatus",
+          "name": "Release Status",
+          "size": "small"
+        }
+      ]
+    }
+  ],
+  "permissions": {
+    "projectAdministrators": [
+      "Project Administrators"
+    ],
+    "contributors": [
+      "Contributors",
+      "Development Team"
+    ],
+    "readers": [
+      "Readers",
+      "Stakeholders"
+    ]
+  },
+  "processTemplate": "Agile",
+  "sourceControlType": "Git",
+  "tags": [
+    "RAG",
+    "AI",
+    "Azure",
+    "Copilot Studio",
+    "Machine Learning",
+    "DevOps"
+  ]
+}

@@ -1,224 +1,521 @@
-<!DOCTYPE HTML>
-<!--
-	Prologue by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
-<html>
-	<head>
-		<title>Prologue by HTML5 UP</title>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
-		<link rel="stylesheet" href="assets/css/main.css" />
-		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
-		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
-	</head>
-	<body>
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Azure DevOps RAG Agent Template</title>
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+        />
+        <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+            rel="stylesheet"
+        />
+        <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css"
+            rel="stylesheet"
+        />
+        <link href="styles.css" rel="stylesheet" />
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="#">
+                    <i class="fas fa-robot me-2"></i>
+                    Azure DevOps RAG Agent Template
+                </a>
+                <button
+                    class="navbar-toggler"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#navbarNav"
+                >
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#overview">Overview</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#timeline">Timeline</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#components"
+                                >Components</a
+                            >
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#checklists"
+                                >Checklists</a
+                            >
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
 
-		<!-- Header -->
-			<div id="header">
+        <div class="container mt-4">
+            <!-- Overview Section -->
+            <section id="overview" class="mb-5">
+                <div class="row">
+                    <div class="col-12">
+                        <h1 class="display-4 mb-4">
+                            <i class="fas fa-project-diagram me-3"></i>
+                            RAG Agent Project Template
+                        </h1>
+                        <p class="lead">
+                            A comprehensive Azure DevOps project template for
+                            building Retrieval-Augmented Generation (RAG) agents
+                            with complete infrastructure, deployment pipelines,
+                            client environment preparation, licensing guide, and
+                            MCP integration for future expansion.
+                        </p>
+                    </div>
+                </div>
 
-				<div class="top">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <i class="fas fa-calendar-alt me-2"></i>
+                                    Project Duration
+                                </h5>
+                                <p class="card-text">
+                                    6-8 weeks from discovery to production
+                                    deployment
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <i class="fas fa-cloud me-2"></i>
+                                    Azure Native
+                                </h5>
+                                <p class="card-text">
+                                    Built on Azure services with best practices
+                                    and scalability
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <i class="fas fa-sync-alt me-2"></i>
+                                    Reusable Template
+                                </h5>
+                                <p class="card-text">
+                                    Configurable template for multiple RAG
+                                    projects
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
-					<!-- Logo -->
-						<div id="logo">
-							<span class="image avatar48"><img src="images/avatar.jpg" alt="" /></span>
-							<h1 id="title">Sooa Lim</h1>
-							<p>Personal blog</p>
-						</div>
+            <!-- Timeline Section -->
+            <section id="timeline" class="mb-5">
+                <h2 class="mb-4">
+                    <i class="fas fa-timeline me-2"></i>
+                    Project Timeline
+                </h2>
+                <div class="timeline-container">
+                    <div class="timeline-item">
+                        <div class="timeline-marker bg-primary"></div>
+                        <div class="timeline-content">
+                            <h5>Week 1-2: Discovery & Planning</h5>
+                            <p>
+                                Discovery sessions, requirements gathering,
+                                technical design, and environment setup
+                            </p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-marker bg-info"></div>
+                        <div class="timeline-content">
+                            <h5>Week 3-4: Data Processing</h5>
+                            <p>
+                                Data extraction, ingestion pipelines, chunking,
+                                and vector store setup
+                            </p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-marker bg-warning"></div>
+                        <div class="timeline-content">
+                            <h5>Week 5-6: Agent Development</h5>
+                            <p>
+                                Copilot Studio agent build, MCP integration, and
+                                continuous data refresh
+                            </p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-marker bg-success"></div>
+                        <div class="timeline-content">
+                            <h5>Week 7-8: Deployment & Transfer</h5>
+                            <p>
+                                UAT deployment, production deployment, testing,
+                                and knowledge transfer
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
-					<!-- Nav -->
-						<nav id="nav">
-							<!--
+            <!-- Components Section -->
+            <section id="components" class="mb-5">
+                <h2 class="mb-4">
+                    <i class="fas fa-puzzle-piece me-2"></i>
+                    Template Components
+                </h2>
+                <div class="row">
+                    <div class="col-md-6 col-lg-4 mb-4">
+                        <div class="card component-card">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <i class="fas fa-tasks me-2"></i>
+                                    Azure DevOps Setup
+                                </h5>
+                                <p class="card-text">
+                                    Work items, boards, pipelines, and
+                                    repository structure
+                                </p>
+                                <button
+                                    class="btn btn-primary btn-sm"
+                                    onclick="showComponent('devops')"
+                                >
+                                    View Details
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4 mb-4">
+                        <div class="card component-card">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <i class="fas fa-database me-2"></i>
+                                    Data Processing
+                                </h5>
+                                <p class="card-text">
+                                    Python scripts for extraction, ingestion,
+                                    and chunking
+                                </p>
+                                <button
+                                    class="btn btn-primary btn-sm"
+                                    onclick="showComponent('data')"
+                                >
+                                    View Details
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4 mb-4">
+                        <div class="card component-card">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <i class="fas fa-server me-2"></i>
+                                    Infrastructure
+                                </h5>
+                                <p class="card-text">
+                                    Bicep templates and PowerShell deployment
+                                    scripts
+                                </p>
+                                <button
+                                    class="btn btn-primary btn-sm"
+                                    onclick="showComponent('infrastructure')"
+                                >
+                                    View Details
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4 mb-4">
+                        <div class="card component-card">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <i class="fas fa-robot me-2"></i>
+                                    Copilot Studio
+                                </h5>
+                                <p class="card-text">
+                                    Agent configuration and topic templates
+                                </p>
+                                <button
+                                    class="btn btn-primary btn-sm"
+                                    onclick="showComponent('copilot')"
+                                >
+                                    View Details
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4 mb-4">
+                        <div class="card component-card">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <i class="fas fa-cog me-2"></i>
+                                    Azure Functions
+                                </h5>
+                                <p class="card-text">
+                                    Serverless functions for data refresh and
+                                    processing
+                                </p>
+                                <button
+                                    class="btn btn-primary btn-sm"
+                                    onclick="showComponent('functions')"
+                                >
+                                    View Details
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4 mb-4">
+                        <div class="card component-card">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <i class="fas fa-file-alt me-2"></i>
+                                    Documentation
+                                </h5>
+                                <p class="card-text">
+                                    Templates for all project phases and
+                                    knowledge transfer
+                                </p>
+                                <button
+                                    class="btn btn-primary btn-sm"
+                                    onclick="showComponent('documentation')"
+                                >
+                                    View Details
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
-								Prologue's nav expects links in one of two formats:
+            <!-- Checklists Section -->
+            <section id="checklists" class="mb-5">
+                <h2 class="mb-4">
+                    <i class="fas fa-check-square me-2"></i>
+                    Client Environment Checklists
+                </h2>
+                <div class="row">
+                    <div class="col-md-6 mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <i class="fas fa-server me-2"></i>
+                                    Infrastructure Checklist
+                                </h5>
+                                <ul class="list-unstyled">
+                                    <li>
+                                        <i
+                                            class="fas fa-check text-success me-2"
+                                        ></i
+                                        >Azure Subscription
+                                    </li>
+                                    <li>
+                                        <i
+                                            class="fas fa-check text-success me-2"
+                                        ></i
+                                        >Resource Groups
+                                    </li>
+                                    <li>
+                                        <i
+                                            class="fas fa-check text-success me-2"
+                                        ></i
+                                        >Network Configuration
+                                    </li>
+                                    <li>
+                                        <i
+                                            class="fas fa-check text-success me-2"
+                                        ></i
+                                        >Security Groups
+                                    </li>
+                                </ul>
+                                <button
+                                    class="btn btn-outline-primary btn-sm"
+                                    onclick="showChecklist('infrastructure')"
+                                >
+                                    View Full Checklist
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <i class="fas fa-key me-2"></i>
+                                    Licensing Requirements
+                                </h5>
+                                <ul class="list-unstyled">
+                                    <li>
+                                        <i
+                                            class="fas fa-check text-success me-2"
+                                        ></i
+                                        >Microsoft 365 E3/E5
+                                    </li>
+                                    <li>
+                                        <i
+                                            class="fas fa-check text-success me-2"
+                                        ></i
+                                        >Power Platform
+                                    </li>
+                                    <li>
+                                        <i
+                                            class="fas fa-check text-success me-2"
+                                        ></i
+                                        >Azure OpenAI
+                                    </li>
+                                    <li>
+                                        <i
+                                            class="fas fa-check text-success me-2"
+                                        ></i
+                                        >Copilot Studio
+                                    </li>
+                                </ul>
+                                <button
+                                    class="btn btn-outline-primary btn-sm"
+                                    onclick="showChecklist('licensing')"
+                                >
+                                    View Full Requirements
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
-								1. Hash link (scrolls to a different section within the page)
+            <!-- Quick Actions -->
+            <section class="mb-5">
+                <h2 class="mb-4">
+                    <i class="fas fa-bolt me-2"></i>
+                    Quick Actions
+                </h2>
+                <div class="row">
+                    <div class="col-md-3 mb-3">
+                        <button
+                            class="btn btn-primary w-100"
+                            onclick="generateProject()"
+                        >
+                            <i class="fas fa-plus me-2"></i>
+                            Generate New Project
+                        </button>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <button
+                            class="btn btn-success w-100"
+                            onclick="downloadAllFiles()"
+                        >
+                            <i class="fas fa-download me-2"></i>
+                            Download Template
+                        </button>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <button
+                            class="btn btn-outline-primary w-100"
+                            onclick="validateEnvironment()"
+                        >
+                            <i class="fas fa-check-circle me-2"></i>
+                            Validate Environment
+                        </button>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <button
+                            class="btn btn-outline-primary w-100"
+                            onclick="estimateCosts()"
+                        >
+                            <i class="fas fa-calculator me-2"></i>
+                            Estimate Costs
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </div>
 
-								   <li><a href="#foobar" id="foobar-link" class="icon fa-whatever-icon-you-want skel-layers-ignoreHref"><span class="label">Foobar</span></a></li>
+        <!-- Component Details Modal -->
+        <div class="modal fade" id="componentModal" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="componentModalTitle">
+                            Component Details
+                        </h5>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                        ></button>
+                    </div>
+                    <div class="modal-body" id="componentModalBody">
+                        <!-- Dynamic content will be loaded here -->
+                    </div>
+                    <div class="modal-footer">
+                        <button
+                            type="button"
+                            class="btn btn-secondary"
+                            data-bs-dismiss="modal"
+                        >
+                            Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-								2. Standard link (sends the user to another page/site)
+        <!-- File Preview Modal -->
+        <div class="modal fade" id="filePreviewModal" tabindex="-1">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="filePreviewModalTitle">
+                            <i class="fas fa-file-code me-2"></i>File Preview
+                        </h5>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                        ></button>
+                    </div>
+                    <div class="modal-body" id="filePreviewModalBody">
+                        <!-- File content will be loaded here -->
+                    </div>
+                    <div class="modal-footer">
+                        <button
+                            type="button"
+                            class="btn btn-secondary"
+                            data-bs-dismiss="modal"
+                        >
+                            Close
+                        </button>
+                        <button
+                            type="button"
+                            class="btn btn-primary"
+                            onclick="copyFileContent()"
+                        >
+                            <i class="fas fa-copy me-2"></i>Copy Content
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-								   <li><a href="http://foobar.tld" id="foobar-link" class="icon fa-whatever-icon-you-want"><span class="label">Foobar</span></a></li>
-
-							-->
-							<ul>
-								<li><a href="#top" id="top-link" class="skel-layers-ignoreHref"><span class="icon fa-home">Intro</span></a></li>
-								<li><a href="#portfolio" id="portfolio-link" class="skel-layers-ignoreHref"><span class="icon fa-th">Portfolio</span></a></li>
-								<li><a href="#about" id="about-link" class="skel-layers-ignoreHref"><span class="icon fa-user">About Me</span></a></li>
-								<li><a href="#contact" id="contact-link" class="skel-layers-ignoreHref"><span class="icon fa-envelope">Contact</span></a></li>
-							</ul>
-						</nav>
-
-				</div>
-
-				<div class="bottom">
-
-					<!-- Social Icons -->
-						<ul class="icons">
-							<li><a href="#" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
-							<li><a href="#" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
-							<li><a href="#" class="icon fa-github"><span class="label">Github</span></a></li>
-							<li><a href="#" class="icon fa-dribbble"><span class="label">Dribbble</span></a></li>
-							<li><a href="#" class="icon fa-envelope"><span class="label">Email</span></a></li>
-						</ul>
-
-				</div>
-
-			</div>
-
-		<!-- Main -->
-			<div id="main">
-
-				<!-- Intro -->
-					<section id="top" class="one dark cover">
-						<div class="container">
-
-							<header>
-								<h2 class="alt">Hi! I'm <strong>Prologue</strong>, a <a href="http://html5up.net/license">free</a> responsive<br />
-								site template designed by <a href="http://html5up.net">HTML5 UP</a>.</h2>
-								<p>Ligula scelerisque justo sem accumsan diam quis<br />
-								vitae natoque dictum sollicitudin elementum.</p>
-							</header>
-
-							<footer>
-								<a href="#portfolio" class="button scrolly">Magna Aliquam</a>
-							</footer>
-
-						</div>
-					</section>
-
-				<!-- Portfolio -->
-					<section id="portfolio" class="two">
-						<div class="container">
-
-							<header>
-								<h2>Portfolio</h2>
-							</header>
-
-							<p>Vitae natoque dictum etiam semper magnis enim feugiat convallis convallis
-							egestas rhoncus ridiculus in quis risus amet curabitur tempor orci penatibus.
-							Tellus erat mauris ipsum fermentum etiam vivamus eget. Nunc nibh morbi quis
-							fusce hendrerit lacus ridiculus.</p>
-
-							<div class="row">
-								<div class="4u 12u$(mobile)">
-									<article class="item">
-										<a href="#" class="image fit"><img src="images/pic02.jpg" alt="" /></a>
-										<header>
-											<h3>Ipsum Feugiat</h3>
-										</header>
-									</article>
-									<article class="item">
-										<a href="#" class="image fit"><img src="images/pic03.jpg" alt="" /></a>
-										<header>
-											<h3>Rhoncus Semper</h3>
-										</header>
-									</article>
-								</div>
-								<div class="4u 12u$(mobile)">
-									<article class="item">
-										<a href="#" class="image fit"><img src="images/pic04.jpg" alt="" /></a>
-										<header>
-											<h3>Magna Nullam</h3>
-										</header>
-									</article>
-									<article class="item">
-										<a href="#" class="image fit"><img src="images/pic05.jpg" alt="" /></a>
-										<header>
-											<h3>Natoque Vitae</h3>
-										</header>
-									</article>
-								</div>
-								<div class="4u$ 12u$(mobile)">
-									<article class="item">
-										<a href="#" class="image fit"><img src="images/pic06.jpg" alt="" /></a>
-										<header>
-											<h3>Dolor Penatibus</h3>
-										</header>
-									</article>
-									<article class="item">
-										<a href="#" class="image fit"><img src="images/pic07.jpg" alt="" /></a>
-										<header>
-											<h3>Orci Convallis</h3>
-										</header>
-									</article>
-								</div>
-							</div>
-
-						</div>
-					</section>
-
-				<!-- About Me -->
-					<section id="about" class="three">
-						<div class="container">
-
-							<header>
-								<h2>About Me</h2>
-							</header>
-
-							<a href="#" class="image featured"><img src="images/pic08.jpg" alt="" /></a>
-
-							<p>Tincidunt eu elit diam magnis pretium accumsan etiam id urna. Ridiculus
-							ultricies curae quis et rhoncus velit. Lobortis elementum aliquet nec vitae
-							laoreet eget cubilia quam non etiam odio tincidunt montes. Elementum sem
-							parturient nulla quam placerat viverra mauris non cum elit tempus ullamcorper
-							dolor. Libero rutrum ut lacinia donec curae mus vel quisque sociis nec
-							ornare iaculis.</p>
-
-						</div>
-					</section>
-
-				<!-- Contact -->
-					<section id="contact" class="four">
-						<div class="container">
-
-							<header>
-								<h2>Contact</h2>
-							</header>
-
-							<p>Elementum sem parturient nulla quam placerat viverra
-							mauris non cum elit tempus ullamcorper dolor. Libero rutrum ut lacinia
-							donec curae mus. Eleifend id porttitor ac ultricies lobortis sem nunc
-							orci ridiculus faucibus a consectetur. Porttitor curae mauris urna mi dolor.</p>
-
-							<form method="post" action="#">
-								<div class="row">
-									<div class="6u 12u$(mobile)"><input type="text" name="name" placeholder="Name" /></div>
-									<div class="6u$ 12u$(mobile)"><input type="text" name="email" placeholder="Email" /></div>
-									<div class="12u$">
-										<textarea name="message" placeholder="Message"></textarea>
-									</div>
-									<div class="12u$">
-										<input type="submit" value="Send Message" />
-									</div>
-								</div>
-							</form>
-
-						</div>
-					</section>
-
-			</div>
-
-		<!-- Footer -->
-			<div id="footer">
-
-				<!-- Copyright -->
-					<ul class="copyright">
-						<li>&copy; Untitled. All rights reserved.</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
-					</ul>
-
-			</div>
-
-		<!-- Scripts -->
-			<script src="assets/js/jquery.min.js"></script>
-			<script src="assets/js/jquery.scrolly.min.js"></script>
-			<script src="assets/js/jquery.scrollzer.min.js"></script>
-			<script src="assets/js/skel.min.js"></script>
-			<script src="assets/js/util.js"></script>
-			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
-			<script src="assets/js/main.js"></script>
-
-	</body>
+        <!-- Scripts -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/yaml.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/json.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/powershell.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/markdown.min.js"></script>
+        <script src="script.js"></script>
+    </body>
 </html>

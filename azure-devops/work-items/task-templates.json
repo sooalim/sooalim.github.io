@@ -1,0 +1,451 @@
+{
+  "taskCategories": {
+    "development": {
+      "name": "Development Tasks",
+      "description": "Tasks related to code development and implementation",
+      "defaultPriority": 2,
+      "defaultTags": ["Development"]
+    },
+    "testing": {
+      "name": "Testing Tasks",
+      "description": "Tasks related to testing and quality assurance",
+      "defaultPriority": 2,
+      "defaultTags": ["Testing", "QA"]
+    },
+    "documentation": {
+      "name": "Documentation Tasks",
+      "description": "Tasks related to documentation creation and maintenance",
+      "defaultPriority": 3,
+      "defaultTags": ["Documentation"]
+    },
+    "deployment": {
+      "name": "Deployment Tasks",
+      "description": "Tasks related to deployment and environment management",
+      "defaultPriority": 1,
+      "defaultTags": ["Deployment", "DevOps"]
+    },
+    "infrastructure": {
+      "name": "Infrastructure Tasks",
+      "description": "Tasks related to infrastructure setup and configuration",
+      "defaultPriority": 1,
+      "defaultTags": ["Infrastructure", "Azure"]
+    }
+  },
+  "taskTemplates": {
+    "dataExtractionTasks": [
+      {
+        "title": "Implement PDF document extractor",
+        "description": "Create Python module to extract text and metadata from PDF documents using Azure Form Recognizer",
+        "category": "development",
+        "estimatedHours": 16,
+        "priority": 2,
+        "tags": ["Python", "PDF", "Azure Form Recognizer"],
+        "acceptanceCriteria": [
+          "PDF text extraction working correctly",
+          "Metadata extraction implemented",
+          "Error handling for corrupted files",
+          "Unit tests created and passing"
+        ],
+        "dependencies": [],
+        "skills": ["Python", "Azure Cognitive Services", "PDF Processing"]
+      },
+      {
+        "title": "Implement Word document extractor",
+        "description": "Create Python module to extract content from Word documents (.docx) with proper formatting preservation",
+        "category": "development",
+        "estimatedHours": 12,
+        "priority": 2,
+        "tags": ["Python", "Word", "Document Processing"],
+        "acceptanceCriteria": [
+          "Word document content extraction working",
+          "Formatting preservation implemented",
+          "Table and image handling included",
+          "Unit tests created and passing"
+        ],
+        "dependencies": [],
+        "skills": ["Python", "Document Processing", "python-docx"]
+      },
+      {
+        "title": "Implement web scraping module",
+        "description": "Create web scraping module with rate limiting and robots.txt compliance",
+        "category": "development",
+        "estimatedHours": 20,
+        "priority": 2,
+        "tags": ["Python", "Web Scraping", "BeautifulSoup"],
+        "acceptanceCriteria": [
+          "Web scraping module functional",
+          "Rate limiting implemented",
+          "Robots.txt compliance verified",
+          "Error handling for failed requests",
+          "Unit tests created and passing"
+        ],
+        "dependencies": [],
+        "skills": ["Python", "Web Scraping", "BeautifulSoup", "Requests"]
+      },
+      {
+        "title": "Configure Azure Cognitive Services integration",
+        "description": "Set up and configure Azure Cognitive Services for document analysis and text extraction",
+        "category": "infrastructure",
+        "estimatedHours": 8,
+        "priority": 1,
+        "tags": ["Azure", "Cognitive Services", "Configuration"],
+        "acceptanceCriteria": [
+          "Azure Cognitive Services provisioned",
+          "API keys configured securely",
+          "Service endpoints tested",
+          "Error handling implemented"
+        ],
+        "dependencies": [],
+        "skills": ["Azure", "Cognitive Services", "API Integration"]
+      }
+    ],
+    "dataIngestionTasks": [
+      {
+        "title": "Implement text chunking algorithm",
+        "description": "Create intelligent text chunking algorithm that preserves semantic meaning while optimizing for vector embedding",
+        "category": "development",
+        "estimatedHours": 24,
+        "priority": 1,
+        "tags": ["Python", "NLP", "Chunking"],
+        "acceptanceCriteria": [
+          "Chunking algorithm implemented",
+          "Semantic preservation verified",
+          "Chunk size optimization completed",
+          "Overlap strategy implemented",
+          "Performance benchmarks established"
+        ],
+        "dependencies": [],
+        "skills": ["Python", "NLP", "Text Processing", "Algorithms"]
+      },
+      {
+        "title": "Implement vector embedding generation",
+        "description": "Create module to generate vector embeddings using Azure OpenAI embedding models",
+        "category": "development",
+        "estimatedHours": 16,
+        "priority": 1,
+        "tags": ["Python", "Azure OpenAI", "Embeddings"],
+        "acceptanceCriteria": [
+          "Vector embedding generation working",
+          "Batch processing implemented",
+          "Error handling for API failures",
+          "Performance optimization completed"
+        ],
+        "dependencies": ["Configure Azure OpenAI service"],
+        "skills": ["Python", "Azure OpenAI", "Vector Embeddings", "API Integration"]
+      },
+      {
+        "title": "Set up Azure Cognitive Search",
+        "description": "Configure Azure Cognitive Search service for vector storage and retrieval",
+        "category": "infrastructure",
+        "estimatedHours": 12,
+        "priority": 1,
+        "tags": ["Azure", "Cognitive Search", "Vector Storage"],
+        "acceptanceCriteria": [
+          "Azure Cognitive Search service provisioned",
+          "Search index configured for vectors",
+          "Vector similarity search tested",
+          "Performance tuning completed"
+        ],
+        "dependencies": [],
+        "skills": ["Azure", "Cognitive Search", "Vector Databases", "Search Configuration"]
+      },
+      {
+        "title": "Implement data ingestion pipeline",
+        "description": "Create automated pipeline to ingest processed data into vector database",
+        "category": "development",
+        "estimatedHours": 20,
+        "priority": 1,
+        "tags": ["Python", "Pipeline", "Automation"],
+        "acceptanceCriteria": [
+          "Data ingestion pipeline operational",
+          "Batch processing implemented",
+          "Error handling and retry logic",
+          "Progress monitoring and logging"
+        ],
+        "dependencies": ["Implement vector embedding generation", "Set up Azure Cognitive Search"],
+        "skills": ["Python", "Pipeline Development", "Automation", "Data Processing"]
+      }
+    ],
+    "copilotStudioTasks": [
+      {
+        "title": "Create Copilot Studio agent",
+        "description": "Set up new Copilot Studio agent with basic configuration and branding",
+        "category": "development",
+        "estimatedHours": 8,
+        "priority": 1,
+        "tags": ["Copilot Studio", "Agent", "Configuration"],
+        "acceptanceCriteria": [
+          "Agent created in Copilot Studio",
+          "Basic configuration completed",
+          "Branding and styling applied",
+          "Initial testing completed"
+        ],
+        "dependencies": [],
+        "skills": ["Copilot Studio", "Conversational AI", "Agent Configuration"]
+      },
+      {
+        "title": "Configure topics and entities",
+        "description": "Define and configure topics, entities, and conversation flows for the RAG agent",
+        "category": "development",
+        "estimatedHours": 16,
+        "priority": 1,
+        "tags": ["Copilot Studio", "Topics", "Entities"],
+        "acceptanceCriteria": [
+          "Main topics configured",
+          "Entities defined and trained",
+          "Conversation flows designed",
+          "Intent recognition tested"
+        ],
+        "dependencies": ["Create Copilot Studio agent"],
+        "skills": ["Copilot Studio", "Conversational Design", "NLP"]
+      },
+      {
+        "title": "Implement RAG integration",
+        "description": "Integrate RAG capabilities into Copilot Studio agent using custom connectors",
+        "category": "development",
+        "estimatedHours": 24,
+        "priority": 1,
+        "tags": ["Copilot Studio", "RAG", "Integration"],
+        "acceptanceCriteria": [
+          "RAG integration implemented",
+          "Vector search connected",
+          "Response generation working",
+          "Context preservation verified"
+        ],
+        "dependencies": ["Configure topics and entities", "Set up Azure Cognitive Search"],
+        "skills": ["Copilot Studio", "RAG", "API Integration", "Custom Connectors"]
+      },
+      {
+        "title": "Test conversational flows",
+        "description": "Comprehensive testing of all conversational flows and scenarios",
+        "category": "testing",
+        "estimatedHours": 16,
+        "priority": 2,
+        "tags": ["Testing", "Conversational AI", "QA"],
+        "acceptanceCriteria": [
+          "All conversation flows tested",
+          "Edge cases identified and handled",
+          "Response quality validated",
+          "Performance benchmarks met"
+        ],
+        "dependencies": ["Implement RAG integration"],
+        "skills": ["Testing", "Conversational AI", "QA", "Test Planning"]
+      }
+    ],
+    "azureFunctionTasks": [
+      {
+        "title": "Create Azure Function App",
+        "description": "Set up Azure Function App for data refresh automation",
+        "category": "infrastructure",
+        "estimatedHours": 6,
+        "priority": 1,
+        "tags": ["Azure Functions", "Infrastructure", "Setup"],
+        "acceptanceCriteria": [
+          "Function App created and configured",
+          "Runtime and dependencies configured",
+          "Environment variables set",
+          "Basic monitoring enabled"
+        ],
+        "dependencies": [],
+        "skills": ["Azure Functions", "Azure Portal", "Infrastructure"]
+      },
+      {
+        "title": "Implement data refresh function",
+        "description": "Develop Python function to automatically refresh data in the vector database",
+        "category": "development",
+        "estimatedHours": 20,
+        "priority": 1,
+        "tags": ["Python", "Azure Functions", "Data Refresh"],
+        "acceptanceCriteria": [
+          "Data refresh function implemented",
+          "Incremental refresh logic working",
+          "Error handling and logging",
+          "Performance optimization completed"
+        ],
+        "dependencies": ["Create Azure Function App"],
+        "skills": ["Python", "Azure Functions", "Data Processing", "Performance Optimization"]
+      },
+      {
+        "title": "Configure timer triggers",
+        "description": "Set up automated scheduling for data refresh functions",
+        "category": "infrastructure",
+        "estimatedHours": 4,
+        "priority": 2,
+        "tags": ["Azure Functions", "Scheduling", "Automation"],
+        "acceptanceCriteria": [
+          "Timer triggers configured",
+          "Schedule optimized for performance",
+          "Monitoring and alerting set up",
+          "Manual trigger option available"
+        ],
+        "dependencies": ["Implement data refresh function"],
+        "skills": ["Azure Functions", "Scheduling", "Monitoring"]
+      }
+    ],
+    "deploymentTasks": [
+      {
+        "title": "Create deployment pipeline",
+        "description": "Set up CI/CD pipeline for automated deployment to UAT and Production",
+        "category": "deployment",
+        "estimatedHours": 16,
+        "priority": 1,
+        "tags": ["DevOps", "CI/CD", "Pipeline"],
+        "acceptanceCriteria": [
+          "CI/CD pipeline created",
+          "Build and test stages configured",
+          "Deployment to UAT automated",
+          "Production deployment with approvals"
+        ],
+        "dependencies": [],
+        "skills": ["Azure DevOps", "CI/CD", "YAML", "Pipeline Configuration"]
+      },
+      {
+        "title": "Configure environment variables",
+        "description": "Set up environment-specific configurations and secrets management",
+        "category": "deployment",
+        "estimatedHours": 8,
+        "priority": 1,
+        "tags": ["Configuration", "Secrets", "Environment"],
+        "acceptanceCriteria": [
+          "Environment variables configured",
+          "Secrets stored securely",
+          "Configuration per environment",
+          "Access controls implemented"
+        ],
+        "dependencies": [],
+        "skills": ["Azure Key Vault", "Configuration Management", "Security"]
+      },
+      {
+        "title": "Deploy to UAT environment",
+        "description": "Execute deployment to UAT environment and validate functionality",
+        "category": "deployment",
+        "estimatedHours": 12,
+        "priority": 1,
+        "tags": ["Deployment", "UAT", "Validation"],
+        "acceptanceCriteria": [
+          "Deployment to UAT successful",
+          "All components functional",
+          "Smoke tests passing",
+          "Performance within acceptable limits"
+        ],
+        "dependencies": ["Create deployment pipeline", "Configure environment variables"],
+        "skills": ["Deployment", "Testing", "Environment Management"]
+      },
+      {
+        "title": "Deploy to Production environment",
+        "description": "Execute production deployment with proper validation and rollback procedures",
+        "category": "deployment",
+        "estimatedHours": 16,
+        "priority": 1,
+        "tags": ["Deployment", "Production", "Rollback"],
+        "acceptanceCriteria": [
+          "Production deployment successful",
+          "All systems operational",
+          "Monitoring and alerting active",
+          "Rollback procedures tested"
+        ],
+        "dependencies": ["Deploy to UAT environment"],
+        "skills": ["Production Deployment", "Monitoring", "Rollback Procedures"]
+      }
+    ],
+    "documentationTasks": [
+      {
+        "title": "Create architecture documentation",
+        "description": "Document the complete system architecture including diagrams and design decisions",
+        "category": "documentation",
+        "estimatedHours": 16,
+        "priority": 2,
+        "tags": ["Documentation", "Architecture", "Design"],
+        "acceptanceCriteria": [
+          "Architecture diagrams created",
+          "Design decisions documented",
+          "Component interactions explained",
+          "Documentation reviewed and approved"
+        ],
+        "dependencies": [],
+        "skills": ["Technical Writing", "Architecture", "Diagramming"]
+      },
+      {
+        "title": "Create user guide",
+        "description": "Develop comprehensive user guide for end users and administrators",
+        "category": "documentation",
+        "estimatedHours": 20,
+        "priority": 2,
+        "tags": ["Documentation", "User Guide", "Training"],
+        "acceptanceCriteria": [
+          "User guide created",
+          "Step-by-step instructions provided",
+          "Screenshots and examples included",
+          "User feedback incorporated"
+        ],
+        "dependencies": [],
+        "skills": ["Technical Writing", "User Experience", "Training Materials"]
+      },
+      {
+        "title": "Create troubleshooting guide",
+        "description": "Document common issues and their solutions for support teams",
+        "category": "documentation",
+        "estimatedHours": 12,
+        "priority": 2,
+        "tags": ["Documentation", "Troubleshooting", "Support"],
+        "acceptanceCriteria": [
+          "Common issues documented",
+          "Solutions and workarounds provided",
+          "Escalation procedures defined",
+          "Support team training completed"
+        ],
+        "dependencies": [],
+        "skills": ["Technical Writing", "Troubleshooting", "Support Procedures"]
+      }
+    ]
+  },
+  "taskEstimationGuidelines": {
+    "simple": {
+      "hours": "4-8",
+      "description": "Simple tasks with clear requirements and minimal dependencies"
+    },
+    "medium": {
+      "hours": "8-16",
+      "description": "Medium complexity tasks requiring some research or integration"
+    },
+    "complex": {
+      "hours": "16-32",
+      "description": "Complex tasks with multiple dependencies or technical challenges"
+    },
+    "epic": {
+      "hours": "32+",
+      "description": "Large tasks that should be broken down into smaller tasks"
+    }
+  },
+  "skillsMatrix": {
+    "python": ["Python", "Data Processing", "APIs", "Testing"],
+    "azure": ["Azure Services", "Cloud Architecture", "DevOps", "Security"],
+    "ai": ["RAG", "Vector Embeddings", "NLP", "Conversational AI"],
+    "frontend": ["HTML", "CSS", "JavaScript", "UI/UX"],
+    "devops": ["CI/CD", "Deployment", "Monitoring", "Infrastructure"]
+  },
+  "customFields": {
+    "skillsRequired": {
+      "name": "Skills Required",
+      "type": "string",
+      "description": "Comma-separated list of skills required for the task"
+    },
+    "riskLevel": {
+      "name": "Risk Level",
+      "type": "string",
+      "allowedValues": ["Low", "Medium", "High"],
+      "description": "Risk level associated with the task"
+    },
+    "blockedBy": {
+      "name": "Blocked By",
+      "type": "string",
+      "description": "Dependencies that are blocking this task"
+    },
+    "estimationConfidence": {
+      "name": "Estimation Confidence",
+      "type": "string",
+      "allowedValues": ["Low", "Medium", "High"],
+      "description": "Confidence level in the time estimation"
+    }
+  }
+}

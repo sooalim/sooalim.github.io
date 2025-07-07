@@ -1,0 +1,338 @@
+:root {
+    --primary-color: #0078d4;
+    --secondary-color: #6c757d;
+    --success-color: #198754;
+    --info-color: #0dcaf0;
+    --warning-color: #ffc107;
+    --danger-color: #dc3545;
+    --light-color: #f8f9fa;
+    --dark-color: #212529;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+}
+
+.navbar-brand {
+    font-weight: 600;
+    font-size: 1.5rem;
+}
+
+.display-4 {
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+.lead {
+    font-size: 1.25rem;
+    font-weight: 300;
+    color: var(--secondary-color);
+}
+
+.card {
+    border: none;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    transition: all 0.3s ease;
+}
+
+/* File Preview Modal Styles */
+.file-preview {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.file-info {
+    background-color: #f8f9fa;
+    border-radius: 0.375rem;
+    padding: 0.75rem;
+    border: 1px solid #dee2e6;
+}
+
+.code-container {
+    background-color: #f8f9fa;
+    border-radius: 0.375rem;
+    border: 1px solid #dee2e6;
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+.code-container pre {
+    margin: 0;
+    padding: 1rem;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.875rem;
+    line-height: 1.4;
+}
+
+.code-container code {
+    background-color: transparent;
+    padding: 0;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+/* Syntax highlighting adjustments */
+.hljs {
+    background-color: #f8f9fa !important;
+    padding: 0 !important;
+}
+
+/* Modal sizing for file preview */
+.modal-xl {
+    max-width: 90vw;
+}
+
+@media (max-width: 768px) {
+    .modal-xl {
+        max-width: 95vw;
+    }
+    
+    .code-container {
+        max-height: 50vh;
+    }
+    
+    .code-container pre {
+        font-size: 0.75rem;
+        padding: 0.5rem;
+    }
+}
+
+.card:hover {
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+}
+
+.component-card {
+    height: 200px;
+}
+
+.component-card .card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* Timeline Styles */
+.timeline-container {
+    position: relative;
+    padding-left: 2rem;
+}
+
+.timeline-container::before {
+    content: '';
+    position: absolute;
+    left: 1rem;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--primary-color);
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 2rem;
+    padding-left: 2rem;
+}
+
+.timeline-marker {
+    position: absolute;
+    left: -2rem;
+    top: 0.5rem;
+    width: 1rem;
+    height: 1rem;
+    border-radius: 50%;
+    border: 2px solid white;
+    box-shadow: 0 0 0 2px var(--primary-color);
+}
+
+.timeline-content {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.timeline-content h5 {
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+}
+
+/* Button Styles */
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-primary:hover {
+    background-color: #106ebe;
+    border-color: #106ebe;
+}
+
+.btn-outline-primary {
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+/* Icon Styles */
+.fas, .fab {
+    color: var(--primary-color);
+}
+
+.text-success .fas {
+    color: var(--success-color) !important;
+}
+
+/* Section Spacing */
+section {
+    scroll-margin-top: 80px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .timeline-container {
+        padding-left: 1rem;
+    }
+    
+    .timeline-item {
+        padding-left: 1.5rem;
+    }
+    
+    .timeline-marker {
+        left: -1.5rem;
+    }
+}
+
+/* Loading States */
+.loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin-top: -10px;
+    margin-left: -10px;
+    border: 2px solid var(--primary-color);
+    border-top: 2px solid transparent;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Modal Customization */
+.modal-header {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.modal-header .btn-close {
+    filter: invert(1);
+}
+
+/* Code Blocks */
+.code-block {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 0.375rem;
+    padding: 1rem;
+    font-family: 'Courier New', monospace;
+    font-size: 0.875rem;
+    margin: 1rem 0;
+}
+
+/* Status Indicators */
+.status-indicator {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 0.5rem;
+}
+
+.status-new {
+    background-color: var(--success-color);
+}
+
+.status-in-progress {
+    background-color: var(--warning-color);
+}
+
+.status-completed {
+    background-color: var(--info-color);
+}
+
+.status-blocked {
+    background-color: var(--danger-color);
+}
+
+/* Checklist Styles */
+.checklist-item {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.checklist-item:last-child {
+    border-bottom: none;
+}
+
+.checklist-item .fas {
+    margin-right: 0.5rem;
+}
+
+/* Progress Bars */
+.progress {
+    height: 0.5rem;
+    background-color: #e9ecef;
+}
+
+.progress-bar {
+    background-color: var(--primary-color);
+}
+
+/* Utility Classes */
+.text-primary {
+    color: var(--primary-color) !important;
+}
+
+.bg-primary {
+    background-color: var(--primary-color) !important;
+}
+
+.border-primary {
+    border-color: var(--primary-color) !important;
+}
+
+.shadow-sm {
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
+}
+
+.shadow {
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+}
+
+.rounded-lg {
+    border-radius: 0.5rem !important;
+}
+
+.fw-600 {
+    font-weight: 600 !important;
+}
+
+.fw-700 {
+    font-weight: 700 !important;
+}

@@ -1,0 +1,52 @@
+# Azure Functions Core
+azure-functions>=1.18.0
+azure-functions-worker>=1.8.0
+
+# Azure SDK
+azure-identity>=1.15.0
+azure-keyvault-secrets>=4.7.0
+azure-storage-blob>=12.19.0
+azure-search-documents>=11.4.0
+azure-cognitiveservices-formrecognizer>=3.3.0
+azure-ai-textanalytics>=5.3.0
+
+# OpenAI
+openai>=1.6.0
+
+# Data processing
+pandas>=2.1.0
+numpy>=1.24.0
+
+# Document processing
+PyPDF2>=3.0.1
+python-docx>=1.0.0
+openpyxl>=3.1.0
+python-pptx>=0.6.23
+beautifulsoup4>=4.12.0
+lxml>=4.9.3
+html2text>=2020.1.16
+
+# Text processing
+nltk>=3.8.0
+spacy>=3.7.0
+tiktoken>=0.5.0
+langdetect>=1.0.9
+
+# Utilities
+requests>=2.31.0
+python-dotenv>=1.0.0
+chardet>=5.2.0
+python-magic>=0.4.27
+
+# JSON and serialization
+jsonschema>=4.19.0
+
+# Date/time handling
+python-dateutil>=2.8.2
+
+# Async support
+aiofiles>=23.2.1
+aiohttp>=3.9.0
+
+# Logging and monitoring
+structlog>=23.2.0

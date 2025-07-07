@@ -1,0 +1,317 @@
+# Azure DevOps Build Pipeline for RAG Agent
+# This pipeline builds and tests the RAG agent components
+
+trigger:
+  branches:
+    include:
+      - main
+      - develop
+      - feature/*
+  paths:
+    include:
+      - src/**
+      - tests/**
+      - requirements.txt
+
+pr:
+  branches:
+    include:
+      - main
+      - develop
+  paths:
+    include:
+      - src/**
+      - tests/**
+      - requirements.txt
+
+variables:
+  # Build configuration
+  buildConfiguration: 'Release'
+  pythonVersion: '3.11'
+  
+  # Pipeline variables
+  vmImage: 'ubuntu-latest'
+  
+  # Project variables
+  projectName: 'rag-agent'
+  artifactName: 'rag-agent-package'
+
+stages:
+  - stage: Build
+    displayName: 'Build and Test'
+    jobs:
+      - job: BuildJob
+        displayName: 'Build RAG Agent Components'
+        pool:
+          vmImage: $(vmImage)
+        
+        steps:
+          - task: UsePythonVersion@0
+            displayName: 'Use Python $(pythonVersion)'
+            inputs:
+              versionSpec: '$(pythonVersion)'
+              addToPath: true
+              architecture: 'x64'
+
+          - script: |
+              python -m pip install --upgrade pip
+              pip install -r src/data-extraction/requirements.txt
+              pip install -r src/mcp/requirements.txt
+              pip install pytest pytest-cov flake8 black mypy
+            displayName: 'Install dependencies'
+
+          - script: |
+              # Code quality checks
+              echo "Running code quality checks..."
+              flake8 src/ --max-line-length=120 --ignore=E203,W503
+              black --check src/
+              mypy src/ --ignore-missing-imports
+            displayName: 'Code quality checks'
+
+          - script: |
+              # Run unit tests with coverage
+              echo "Running unit tests..."
+              pytest tests/unit/ -v --cov=src --cov-report=xml --cov-report=html
+            displayName: 'Run unit tests'
+
+          - task: PublishTestResults@2
+            displayName: 'Publish test results'
+            inputs:
+              testResultsFiles: '**/test-results.xml'
+              testRunTitle: 'Python Unit Tests'
+              failTaskOnFailedTests: true
+            condition: succeededOrFailed()
+
+          - task: PublishCodeCoverageResults@1
+            displayName: 'Publish code coverage'
+            inputs:
+              codeCoverageTool: 'Cobertura'
+              summaryFileLocation: '**/coverage.xml'
+              reportDirectory: '**/htmlcov'
+            condition: succeededOrFailed()
+
+          - script: |
+              # Create package structure
+              echo "Creating package structure..."
+              mkdir -p $(Build.ArtifactStagingDirectory)/src
+              mkdir -p $(Build.ArtifactStagingDirectory)/infrastructure
+              mkdir -p $(Build.ArtifactStagingDirectory)/documentation
+              
+              # Copy source files
+              cp -r src/* $(Build.ArtifactStagingDirectory)/src/
+              cp -r infrastructure/* $(Build.ArtifactStagingDirectory)/infrastructure/
+              cp -r documentation/* $(Build.ArtifactStagingDirectory)/documentation/
+              
+              # Copy configuration files
+              cp azure-devops/pipelines/*.yml $(Build.ArtifactStagingDirectory)/
+              
+              # Create version file
+              echo "$(Build.BuildNumber)" > $(Build.ArtifactStagingDirectory)/version.txt
+              echo "$(Build.SourceVersion)" > $(Build.ArtifactStagingDirectory)/commit.txt
+            displayName: 'Prepare artifacts'
+
+          - task: PublishBuildArtifacts@1
+            displayName: 'Publish build artifacts'
+            inputs:
+              pathToPublish: '$(Build.ArtifactStagingDirectory)'
+              artifactName: '$(artifactName)'
+              publishLocation: 'Container'
+
+  - stage: SecurityScan
+    displayName: 'Security Scanning'
+    dependsOn: Build
+    condition: succeeded()
+    jobs:
+      - job: SecurityScanJob
+        displayName: 'Run Security Scans'
+        pool:
+          vmImage: $(vmImage)
+        
+        steps:
+          - task: UsePythonVersion@0
+            displayName: 'Use Python $(pythonVersion)'
+            inputs:
+              versionSpec: '$(pythonVersion)'
+              addToPath: true
+
+          - script: |
+              # Install security scanning tools
+              pip install safety bandit semgrep
+            displayName: 'Install security tools'
+
+          - script: |
+              # Check for known vulnerabilities in dependencies
+              echo "Checking for known vulnerabilities..."
+              safety check --json --output safety-report.json || true
+            displayName: 'Dependency vulnerability scan'
+
+          - script: |
+              # Static security analysis
+              echo "Running static security analysis..."
+              bandit -r src/ -f json -o bandit-report.json || true
+            displayName: 'Static security analysis'
+
+          - script: |
+              # Additional security checks with Semgrep
+              echo "Running Semgrep security checks..."
+              semgrep --config=auto src/ --json --output=semgrep-report.json || true
+            displayName: 'Semgrep security scan'
+
+          - task: PublishBuildArtifacts@1
+            displayName: 'Publish security reports'
+            inputs:
+              pathToPublish: '$(Build.SourcesDirectory)'
+              artifactName: 'security-reports'
+              publishLocation: 'Container'
+            condition: always()
+
+  - stage: IntegrationTests
+    displayName: 'Integration Tests'
+    dependsOn: Build
+    condition: succeeded()
+    jobs:
+      - job: IntegrationTestJob
+        displayName: 'Run Integration Tests'
+        pool:
+          vmImage: $(vmImage)
+        
+        variables:
+          # Test environment variables
+          AZURE_STORAGE_CONNECTION_STRING: $(TEST_STORAGE_CONNECTION_STRING)
+          AZURE_OPENAI_API_KEY: $(TEST_OPENAI_API_KEY)
+          AZURE_OPENAI_ENDPOINT: $(TEST_OPENAI_ENDPOINT)
+          AZURE_SEARCH_SERVICE_NAME: $(TEST_SEARCH_SERVICE_NAME)
+          AZURE_SEARCH_API_KEY: $(TEST_SEARCH_API_KEY)
+        
+        steps:
+          - task: DownloadBuildArtifacts@0
+            displayName: 'Download build artifacts'
+            inputs:
+              buildType: 'current'
+              downloadType: 'single'
+              artifactName: '$(artifactName)'
+              downloadPath: '$(System.ArtifactsDirectory)'
+
+          - task: UsePythonVersion@0
+            displayName: 'Use Python $(pythonVersion)'
+            inputs:
+              versionSpec: '$(pythonVersion)'
+              addToPath: true
+
+          - script: |
+              # Install test dependencies
+              pip install -r $(System.ArtifactsDirectory)/$(artifactName)/src/data-extraction/requirements.txt
+              pip install -r $(System.ArtifactsDirectory)/$(artifactName)/src/mcp/requirements.txt
+              pip install pytest pytest-html requests-mock
+            displayName: 'Install test dependencies'
+
+          - script: |
+              # Run integration tests
+              echo "Running integration tests..."
+              cd $(System.ArtifactsDirectory)/$(artifactName)
+              pytest tests/integration/ -v --html=integration-test-report.html --self-contained-html
+            displayName: 'Run integration tests'
+            env:
+              AZURE_STORAGE_CONNECTION_STRING: $(AZURE_STORAGE_CONNECTION_STRING)
+              AZURE_OPENAI_API_KEY: $(AZURE_OPENAI_API_KEY)
+              AZURE_OPENAI_ENDPOINT: $(AZURE_OPENAI_ENDPOINT)
+              AZURE_SEARCH_SERVICE_NAME: $(AZURE_SEARCH_SERVICE_NAME)
+              AZURE_SEARCH_API_KEY: $(AZURE_SEARCH_API_KEY)
+
+          - task: PublishTestResults@2
+            displayName: 'Publish integration test results'
+            inputs:
+              testResultsFiles: '**/integration-test-results.xml'
+              testRunTitle: 'Integration Tests'
+              failTaskOnFailedTests: true
+            condition: succeededOrFailed()
+
+          - task: PublishBuildArtifacts@1
+            displayName: 'Publish integration test report'
+            inputs:
+              pathToPublish: '$(System.ArtifactsDirectory)/$(artifactName)/integration-test-report.html'
+              artifactName: 'integration-test-report'
+              publishLocation: 'Container'
+            condition: always()
+
+  - stage: PackageValidation
+    displayName: 'Package Validation'
+    dependsOn: 
+      - Build
+      - SecurityScan
+      - IntegrationTests
+    condition: succeeded()
+    jobs:
+      - job: PackageValidationJob
+        displayName: 'Validate Package'
+        pool:
+          vmImage: $(vmImage)
+        
+        steps:
+          - task: DownloadBuildArtifacts@0
+            displayName: 'Download build artifacts'
+            inputs:
+              buildType: 'current'
+              downloadType: 'single'
+              artifactName: '$(artifactName)'
+              downloadPath: '$(System.ArtifactsDirectory)'
+
+          - script: |
+              # Validate package structure
+              echo "Validating package structure..."
+              cd $(System.ArtifactsDirectory)/$(artifactName)
+              
+              # Check required directories
+              required_dirs=("src" "infrastructure" "documentation")
+              for dir in "${required_dirs[@]}"; do
+                if [ ! -d "$dir" ]; then
+                  echo "ERROR: Required directory $dir not found"
+                  exit 1
+                fi
+              done
+              
+              # Check required files
+              required_files=("version.txt" "commit.txt")
+              for file in "${required_files[@]}"; do
+                if [ ! -f "$file" ]; then
+                  echo "ERROR: Required file $file not found"
+                  exit 1
+                fi
+              done
+              
+              echo "Package validation completed successfully"
+            displayName: 'Validate package structure'
+
+          - script: |
+              # Generate package manifest
+              echo "Generating package manifest..."
+              cd $(System.ArtifactsDirectory)/$(artifactName)
+              
+              cat > package-manifest.json << EOF
+              {
+                "name": "$(projectName)",
+                "version": "$(Build.BuildNumber)",
+                "build_date": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+                "commit": "$(cat commit.txt)",
+                "branch": "$(Build.SourceBranchName)",
+                "components": [
+                  "data-extraction",
+                  "data-ingestion", 
+                  "azure-functions",
+                  "mcp-server",
+                  "infrastructure",
+                  "documentation"
+                ],
+                "environments": ["UAT", "Production"]
+              }
+              EOF
+              
+              echo "Package manifest generated"
+            displayName: 'Generate package manifest'
+
+          - task: PublishBuildArtifacts@1
+            displayName: 'Publish validated package'
+            inputs:
+              pathToPublish: '$(System.ArtifactsDirectory)/$(artifactName)'
+              artifactName: '$(artifactName)-validated'
+              publishLocation: 'Container'

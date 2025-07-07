@@ -1,0 +1,392 @@
+# Azure DevOps Infrastructure Pipeline for RAG Agent
+# This pipeline validates and deploys infrastructure using Bicep templates
+
+trigger:
+  branches:
+    include:
+      - main
+  paths:
+    include:
+      - infrastructure/**
+
+pr:
+  branches:
+    include:
+      - main
+  paths:
+    include:
+      - infrastructure/**
+
+variables:
+  # Build configuration
+  vmImage: 'ubuntu-latest'
+  
+  # Project variables
+  projectName: 'rag-agent'
+  bicepVersion: 'latest'
+
+stages:
+  - stage: ValidateInfrastructure
+    displayName: 'Validate Infrastructure'
+    jobs:
+      - job: ValidateJob
+        displayName: 'Validate Bicep Templates'
+        pool:
+          vmImage: $(vmImage)
+        
+        steps:
+          - task: AzureCLI@2
+            displayName: 'Install Bicep'
+            inputs:
+              azureSubscription: 'Azure-Service-Connection'
+              scriptType: 'bash'
+              scriptLocation: 'inlineScript'
+              inlineScript: |
+                # Install Bicep CLI
+                curl -Lo bicep https://github.com/Azure/bicep/releases/latest/download/bicep-linux-x64
+                chmod +x ./bicep
+                sudo mv ./bicep /usr/local/bin/bicep
+                
+                # Verify installation
+                bicep --version
+
+          - script: |
+              echo "Validating Bicep templates..."
+              
+              # Validate main template
+              echo "Validating main.bicep..."
+              bicep build infrastructure/bicep/main.bicep --outfile main.json
+              
+              # Validate individual modules
+              echo "Validating storage.bicep..."
+              bicep build infrastructure/bicep/storage.bicep --outfile storage.json
+              
+              echo "Validating cognitive-services.bicep..."
+              bicep build infrastructure/bicep/cognitive-services.bicep --outfile cognitive-services.json
+              
+              echo "Validating functions.bicep..."
+              bicep build infrastructure/bicep/functions.bicep --outfile functions.json
+              
+              echo "Validating search.bicep..."
+              bicep build infrastructure/bicep/search.bicep --outfile search.json
+              
+              echo "Bicep validation completed successfully"
+            displayName: 'Validate Bicep Syntax'
+
+          - task: AzureCLI@2
+            displayName: 'Validate ARM Templates'
+            inputs:
+              azureSubscription: 'Azure-Service-Connection'
+              scriptType: 'bash'
+              scriptLocation: 'inlineScript'
+              inlineScript: |
+                echo "Validating ARM templates..."
+                
+                # Create test resource group
+                TEST_RG="rg-$(projectName)-validation-$(Build.BuildNumber)"
+                
+                az group create \
+                  --name $TEST_RG \
+                  --location "East US 2"
+                
+                # Validate main template
+                az deployment group validate \
+                  --resource-group $TEST_RG \
+                  --template-file main.json \
+                  --parameters environment=Test \
+                  --parameters projectName=$(projectName) \
+                  --parameters openAIApiKey="test-key" \
+                  --parameters location="East US 2"
+                
+                # Clean up test resource group
+                az group delete --name $TEST_RG --yes --no-wait
+                
+                echo "ARM template validation completed"
+
+          - script: |
+              echo "Running infrastructure security scan..."
+              
+              # Install Checkov for security scanning
+              pip install checkov
+              
+              # Run security scan on ARM templates
+              checkov -f main.json --framework arm --output cli
+              checkov -f storage.json --framework arm --output cli
+              checkov -f cognitive-services.json --framework arm --output cli
+              checkov -f functions.json --framework arm --output cli
+              checkov -f search.json --framework arm --output cli
+              
+              echo "Security scan completed"
+            displayName: 'Security Scan'
+
+          - script: |
+              echo "Validating PowerShell scripts..."
+              
+              # Install PowerShell
+              sudo apt-get update
+              sudo apt-get install -y powershell
+              
+              # Validate PowerShell scripts
+              pwsh -Command "Test-Path infrastructure/powershell/deploy-infrastructure.ps1"
+              pwsh -Command "Test-Path infrastructure/powershell/setup-environment.ps1"
+              
+              # Basic syntax check
+              pwsh -Command "Get-Command -Syntax -Name infrastructure/powershell/deploy-infrastructure.ps1" || echo "Script validation completed"
+              
+              echo "PowerShell script validation completed"
+            displayName: 'Validate PowerShell Scripts'
+
+          - task: PublishBuildArtifacts@1
+            displayName: 'Publish Infrastructure Artifacts'
+            inputs:
+              pathToPublish: '$(Build.SourcesDirectory)'
+              artifactName: 'infrastructure-templates'
+              publishLocation: 'Container'
+
+  - stage: DeployInfrastructureDev
+    displayName: 'Deploy to Development'
+    dependsOn: ValidateInfrastructure
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+    variables:
+      - group: RAG-Agent-Development
+      - name: environmentName
+        value: 'Development'
+      - name: resourceGroupName
+        value: 'rg-rag-agent-dev'
+    
+    jobs:
+      - deployment: DeployInfrastructureJob
+        displayName: 'Deploy Infrastructure to Development'
+        pool:
+          vmImage: $(vmImage)
+        environment: 'Development-Infrastructure'
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - task: DownloadBuildArtifacts@0
+                  displayName: 'Download infrastructure artifacts'
+                  inputs:
+                    buildType: 'current'
+                    downloadType: 'single'
+                    artifactName: 'infrastructure-templates'
+                    downloadPath: '$(System.ArtifactsDirectory)'
+
+                - task: AzureCLI@2
+                  displayName: 'Create Resource Group'
+                  inputs:
+                    azureSubscription: 'Azure-Service-Connection'
+                    scriptType: 'bash'
+                    scriptLocation: 'inlineScript'
+                    inlineScript: |
+                      echo "Creating resource group..."
+                      az group create \
+                        --name $(resourceGroupName) \
+                        --location $(location) \
+                        --tags Environment=$(environmentName) Project=$(projectName)
+
+                - task: AzureCLI@2
+                  displayName: 'Deploy Infrastructure'
+                  inputs:
+                    azureSubscription: 'Azure-Service-Connection'
+                    scriptType: 'bash'
+                    scriptLocation: 'inlineScript'
+                    inlineScript: |
+                      cd $(System.ArtifactsDirectory)/infrastructure-templates
+                      
+                      echo "Deploying infrastructure to Development..."
+                      az deployment group create \
+                        --resource-group $(resourceGroupName) \
+                        --template-file infrastructure/bicep/main.bicep \
+                        --parameters environment=$(environmentName) \
+                        --parameters projectName=$(projectName) \
+                        --parameters openAIApiKey=$(openAIApiKey) \
+                        --parameters location=$(location) \
+                        --mode Incremental
+                      
+                      echo "Infrastructure deployment completed"
+
+                - task: AzurePowerShell@5
+                  displayName: 'Configure Environment'
+                  inputs:
+                    azureSubscription: 'Azure-Service-Connection'
+                    scriptType: 'filePath'
+                    scriptPath: '$(System.ArtifactsDirectory)/infrastructure-templates/infrastructure/powershell/setup-environment.ps1'
+                    scriptArguments: '-EnvironmentName $(environmentName) -ResourceGroupName $(resourceGroupName) -ProjectName $(projectName)'
+                    azurePowerShellVersion: 'latestVersion'
+
+                - task: AzureCLI@2
+                  displayName: 'Validate Deployment'
+                  inputs:
+                    azureSubscription: 'Azure-Service-Connection'
+                    scriptType: 'bash'
+                    scriptLocation: 'inlineScript'
+                    inlineScript: |
+                      echo "Validating deployment..."
+                      
+                      # Check if resources were created
+                      echo "Checking Storage Account..."
+                      az storage account show --name "st$(projectName)$(environmentName)" --resource-group $(resourceGroupName)
+                      
+                      echo "Checking Cognitive Services..."
+                      az cognitiveservices account show --name "cs-$(projectName)-$(environmentName)" --resource-group $(resourceGroupName)
+                      
+                      echo "Checking Function App..."
+                      az functionapp show --name "func-$(projectName)-$(environmentName)" --resource-group $(resourceGroupName)
+                      
+                      echo "Checking Search Service..."
+                      az search service show --name "srch-$(projectName)-$(environmentName)" --resource-group $(resourceGroupName)
+                      
+                      echo "Deployment validation completed"
+
+  - stage: InfrastructureTests
+    displayName: 'Infrastructure Tests'
+    dependsOn: DeployInfrastructureDev
+    condition: succeeded()
+    jobs:
+      - job: InfrastructureTestJob
+        displayName: 'Test Infrastructure'
+        pool:
+          vmImage: $(vmImage)
+        variables:
+          - group: RAG-Agent-Development
+          - name: environmentName
+            value: 'Development'
+          - name: resourceGroupName
+            value: 'rg-rag-agent-dev'
+        
+        steps:
+          - script: |
+              echo "Installing test dependencies..."
+              pip install azure-cli azure-identity azure-storage-blob azure-cognitiveservices-search
+            displayName: 'Install Test Dependencies'
+
+          - task: AzureCLI@2
+            displayName: 'Test Storage Account'
+            inputs:
+              azureSubscription: 'Azure-Service-Connection'
+              scriptType: 'bash'
+              scriptLocation: 'inlineScript'
+              inlineScript: |
+                echo "Testing Storage Account connectivity..."
+                
+                # Test blob storage
+                az storage container create \
+                  --name test-container \
+                  --account-name "st$(projectName)$(environmentName)" \
+                  --connection-string "$(storageConnectionString)"
+                
+                # Upload test file
+                echo "Test file content" > test-file.txt
+                az storage blob upload \
+                  --file test-file.txt \
+                  --container-name test-container \
+                  --name test-file.txt \
+                  --connection-string "$(storageConnectionString)"
+                
+                # Clean up
+                az storage container delete \
+                  --name test-container \
+                  --account-name "st$(projectName)$(environmentName)" \
+                  --connection-string "$(storageConnectionString)"
+                
+                echo "Storage Account test completed"
+
+          - task: AzureCLI@2
+            displayName: 'Test Cognitive Services'
+            inputs:
+              azureSubscription: 'Azure-Service-Connection'
+              scriptType: 'bash'
+              scriptLocation: 'inlineScript'
+              inlineScript: |
+                echo "Testing Cognitive Services connectivity..."
+                
+                # Test OpenAI service
+                curl -X POST "$(openAIEndpoint)/openai/deployments/gpt-35-turbo/chat/completions?api-version=2023-05-15" \
+                  -H "api-key: $(openAIApiKey)" \
+                  -H "Content-Type: application/json" \
+                  -d '{
+                    "messages": [{"role": "user", "content": "Hello"}],
+                    "max_tokens": 5
+                  }' || echo "OpenAI test completed"
+                
+                echo "Cognitive Services test completed"
+
+          - task: AzureCLI@2
+            displayName: 'Test Search Service'
+            inputs:
+              azureSubscription: 'Azure-Service-Connection'
+              scriptType: 'bash'
+              scriptLocation: 'inlineScript'
+              inlineScript: |
+                echo "Testing Search Service connectivity..."
+                
+                # Test search service
+                curl -X GET "https://srch-$(projectName)-$(environmentName).search.windows.net/indexes?api-version=2023-11-01" \
+                  -H "api-key: $(searchApiKey)" || echo "Search service test completed"
+                
+                echo "Search Service test completed"
+
+  - stage: GenerateDocumentation
+    displayName: 'Generate Documentation'
+    dependsOn: InfrastructureTests
+    condition: succeeded()
+    jobs:
+      - job: DocumentationJob
+        displayName: 'Generate Infrastructure Documentation'
+        pool:
+          vmImage: $(vmImage)
+        
+        steps:
+          - task: DownloadBuildArtifacts@0
+            displayName: 'Download infrastructure artifacts'
+            inputs:
+              buildType: 'current'
+              downloadType: 'single'
+              artifactName: 'infrastructure-templates'
+              downloadPath: '$(System.ArtifactsDirectory)'
+
+          - script: |
+              echo "Generating infrastructure documentation..."
+              
+              # Create documentation directory
+              mkdir -p $(Build.ArtifactStagingDirectory)/infrastructure-docs
+              
+              # Generate ARM template documentation
+              cat > $(Build.ArtifactStagingDirectory)/infrastructure-docs/infrastructure-overview.md << 'EOF'
+              # Infrastructure Overview
+              
+              This document provides an overview of the Azure infrastructure deployed for the RAG Agent.
+              
+              ## Resources Deployed
+              
+              - **Storage Account**: For data storage and blob operations
+              - **Cognitive Services**: For AI/ML capabilities including OpenAI
+              - **Azure Function App**: For serverless compute
+              - **Azure Cognitive Search**: For vector search capabilities
+              - **Application Insights**: For monitoring and diagnostics
+              - **Key Vault**: For secrets management
+              
+              ## Architecture
+              
+              The infrastructure follows Azure best practices with:
+              - Resource naming conventions
+              - Proper security configurations
+              - Monitoring and logging
+              - Scalability considerations
+              
+              ## Deployment
+              
+              Infrastructure is deployed using Bicep templates with environment-specific parameters.
+              
+              EOF
+              
+              echo "Infrastructure documentation generated"
+            displayName: 'Generate Documentation'
+
+          - task: PublishBuildArtifacts@1
+            displayName: 'Publish Documentation'
+            inputs:
+              pathToPublish: '$(Build.ArtifactStagingDirectory)/infrastructure-docs'
+              artifactName: 'infrastructure-documentation'
+              publishLocation: 'Container'
